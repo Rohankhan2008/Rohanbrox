@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Voice Playback</title>
+</head>
+<body>
+    <h2>আপনার কণ্ঠ রিয়েলটাইমে প্লে হবে</h2>
+    <button onclick="startListening()">🎤 শুরু করুন</button>
+    <button onclick="stopListening()">⏹️ বন্ধ করুন</button>
+
+    <script>
+        let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        let synth = window.speechSynthesis;
+
+        recognition.lang = "bn-BD"; // বাংলা ভাষা সাপোর্টের জন্য
+        recognition.continuous = true; 
+
+        recognition.onresult = function(event) {
+            let last = event.results.length - 1;
+            let text = event.results[last][0].transcript;
+            
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = "bn-BD"; // বাংলা ভয়েস প্লেব্যাক
+            synth.speak(utterance);
+        };
+
+        function startListening() {
+            recognition.start();
+        }
+
+        function stopListening() {
+            recognition.stop();
+        }
+    </script>
+</body>
+</html>
